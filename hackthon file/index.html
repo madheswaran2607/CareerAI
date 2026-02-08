@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Career Guidance System</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Navigation Bar -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-brand">
+                <span class="brand-icon">🚀</span>
+                <span class="brand-text">CareerAI</span>
+            </div>
+            <ul class="nav-menu">
+                <li><a href="#home" class="nav-link active" onclick="scrollToSection('home')">Home</a></li>
+                <li><a href="#tools" class="nav-link" onclick="scrollToSection('tools')">Tools</a></li>
+                <li><a href="#about" class="nav-link" onclick="scrollToSection('about')">About</a></li>
+            </ul>
+            <div class="nav-actions">
+                <label class="theme-toggle">
+                    <input id="themeToggle" type="checkbox" aria-label="Toggle light mode">
+                    <span class="toggle-slider"></span>
+                </label>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="home" class="hero">
+        <div class="hero-content">
+            <h1 class="hero-title">Your AI Career Guide</h1>
+            <p class="hero-subtitle">Personalized career recommendations, skill assessment, and learning roadmaps powered by AI</p>
+            
+            <div class="user-profile">
+                <input id="studentName" class="name-input" type="text" placeholder="Enter your name...">
+                <button class="name-btn" onclick="updateProfile()">Get Started</button>
+            </div>
+            
+            <div class="status-indicator">
+                <span class="status-dot"></span>
+                <span id="aiStatus">AI System Ready</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- Main Content -->
+    <div class="container">
+        <!-- Tools Grid -->
+        <section id="tools" class="tools-section">
+            <h2 class="section-title">Career Guidance Tools</h2>
+            <div class="tools-grid">
+                
+                <!-- Career Interest Mapper -->
+                <div class="tool-card">
+                    <div class="card-header">
+                        <span class="card-icon">🎯</span>
+                        <h3>Career Path Finder</h3>
+                    </div>
+                    <p class="card-description">Discover careers matching your interests</p>
+                    <div class="card-body">
+                        <input id="interest" type="text" placeholder="e.g., coding, design, data analysis..." class="tool-input">
+                        <button onclick="careerSuggest()" class="tool-btn primary">Analyze</button>
+                    </div>
+                    <div class="result-box" id="careerResult">
+                        <div class="result-content" id="careerContent">Enter your interests to get started</div>
+                    </div>
+                </div>
+
+                <!-- Learning Plan Generator -->
+                <div class="tool-card">
+                    <div class="card-header">
+                        <span class="card-icon">📚</span>
+                        <h3>Learning Roadmap</h3>
+                    </div>
+                    <p class="card-description">Create a structured learning path</p>
+                    <div class="card-body">
+                        <input id="domain" type="text" placeholder="e.g., Web Dev, Data Science..." class="tool-input">
+                        <button onclick="domainPlan()" class="tool-btn primary">Generate</button>
+                    </div>
+                    <div class="result-box" id="domainResult">
+                        <div class="result-content" id="domainContent">Select a domain to create a learning plan</div>
+                    </div>
+                </div>
+
+                <!-- Resume Analyzer -->
+                <div class="tool-card">
+                    <div class="card-header">
+                        <span class="card-icon">📄</span>
+                        <h3>Resume Analyzer</h3>
+                    </div>
+                    <p class="card-description">Get instant feedback on your resume</p>
+                    <div class="card-body">
+                        <div class="uploader">
+                            <input id="resumeFile" type="file" accept=".pdf,.doc,.docx,.txt" class="file-input" title="Upload your resume file">
+                            <div class="uploader-help">Drag & drop or click to upload (PDF, DOCX, TXT)</div>
+                        </div>
+                        <textarea id="resume" placeholder="Or paste your resume here..." class="tool-input resume-input"></textarea>
+                        <div class="uploader-actions">
+                            <button id="parseFileBtn" class="tool-btn">Parse File</button>
+                            <button onclick="resumeCheck()" class="tool-btn primary">Analyze</button>
+                        </div>
+                    </div>
+                    <div class="result-box" id="resumeResult">
+                        <div class="result-content" id="resumeContent">Your analysis will appear here</div>
+                    </div>
+                </div>
+
+                <!-- Company Guide -->
+                <div class="tool-card">
+                    <div class="card-header">
+                        <span class="card-icon">🏢</span>
+                        <h3>Company Explorer</h3>
+                    </div>
+                    <p class="card-description">Find top companies in your field</p>
+                    <div class="card-body">
+                        <input id="field" type="text" placeholder="e.g., AI, Cybersecurity, Finance..." class="tool-input">
+                        <button onclick="companySuggest()" class="tool-btn primary">Explore</button>
+                    </div>
+                    <div class="result-box" id="companyResult">
+                        <div class="result-content" id="companyContent">Enter a field to see top companies</div>
+                    </div>
+                </div>
+
+                <!-- Skill Assessment -->
+                <div class="tool-card">
+                    <div class="card-header">
+                        <span class="card-icon">📊</span>
+                        <h3>Skill Assessment</h3>
+                    </div>
+                    <p class="card-description">Evaluate your current skill level</p>
+                    <div class="card-body">
+                        <select id="skills" class="tool-input" title="Select your skill level">
+                            <option value="">Select your level...</option>
+                            <option value="beginner">Beginner</option>
+                            <option value="intermediate">Intermediate</option>
+                            <option value="advanced">Advanced</option>
+                            <option value="expert">Expert</option>
+                        </select>
+                        </select>
+                        <button onclick="benchmark()" class="tool-btn primary">Assess</button>
+                    </div>
+                    <div class="result-box" id="levelResult">
+                        <div class="result-content" id="levelContent">Select your skill level to proceed</div>
+                    </div>
+                </div>
+
+                <!-- Priority Skills -->
+                <div class="tool-card">
+                    <div class="card-header">
+                        <span class="card-icon">🎖️</span>
+                        <h3>In-Demand Skills</h3>
+                    </div>
+                    <p class="card-description">See the hottest skills right now</p>
+                    <div class="card-body">
+                        <button onclick="prioritySkills()" class="tool-btn primary full-width">View Skills</button>
+                    </div>
+                    <div class="result-box" id="priorityResult">
+                        <div class="result-content" id="priorityContent">Click to see the most in-demand skills</div>
+                    </div>
+                </div>
+
+                <!-- Study Plan -->
+                <div class="tool-card">
+                    <div class="card-header">
+                        <span class="card-icon">📅</span>
+                        <h3>Study Schedule</h3>
+                    </div>
+                    <p class="card-description">Get a personalized study calendar</p>
+                    <div class="card-body">
+                        <button onclick="studyPlan()" class="tool-btn primary full-width">Create Plan</button>
+                    </div>
+                    <div class="result-box" id="planResult">
+                        <div class="result-content" id="planContent">Generate your personalized study plan</div>
+                    </div>
+                </div>
+
+                <!-- Project Ideas -->
+                <div class="tool-card">
+                    <div class="card-header">
+                        <span class="card-icon">💡</span>
+                        <h3>Project Ideas</h3>
+                    </div>
+                    <p class="card-description">Build your portfolio with real projects</p>
+                    <div class="card-body">
+                        <button onclick="projectIdeas()" class="tool-btn primary full-width">Discover</button>
+                    </div>
+                    <div class="result-box" id="projectResult">
+                        <div class="result-content" id="projectContent">Get AI-suggested project ideas</div>
+                    </div>
+                </div>
+
+                <!-- Job Trends -->
+                <div class="tool-card">
+                    <div class="card-header">
+                        <span class="card-icon">📈</span>
+                        <h3>Market Trends</h3>
+                    </div>
+                    <p class="card-description">Understand current job market trends</p>
+                    <div class="card-body">
+                        <button onclick="jobTrendAI()" class="tool-btn primary full-width">Analyze</button>
+                    </div>
+                    <div class="result-box" id="trendResult">
+                        <div class="result-content" id="trendContent">Get the latest job market insights</div>
+                    </div>
+                </div>
+
+                <!-- AI Feedback -->
+                <div class="tool-card">
+                    <div class="card-header">
+                        <span class="card-icon">🔄</span>
+                        <h3>Smart Feedback</h3>
+                    </div>
+                    <p class="card-description">Adaptive guidance based on your progress</p>
+                    <div class="card-body">
+                        <button onclick="feedbackAI()" class="tool-btn primary full-width">Get Feedback</button>
+                    </div>
+                    <div class="result-box" id="feedbackResult">
+                        <div class="result-content" id="feedbackContent">Receive AI-powered personalized feedback</div>
+                    </div>
+                </div>
+
+                <!-- Career Quiz -->
+                <div class="tool-card">
+                    <div class="card-header">
+                        <span class="card-icon">❓</span>
+                        <h3>Career Quiz</h3>
+                    </div>
+                    <p class="card-description">Find careers matching your personality</p>
+                    <div class="card-body">
+                        <button onclick="startCareerQuiz()" class="tool-btn primary full-width">Start Quiz</button>
+                    </div>
+                    <div class="result-box" id="quizResult">
+                        <div class="result-content" id="quizContent">Take the quiz to discover your ideal career</div>
+                    </div>
+                </div>
+
+                <!-- Interview Prep -->
+                <div class="tool-card">
+                    <div class="card-header">
+                        <span class="card-icon">🎤</span>
+                        <h3>Interview Prep</h3>
+                    </div>
+                    <p class="card-description">Master common interview questions</p>
+                    <div class="card-body">
+                        <button onclick="interviewPrep()" class="tool-btn primary full-width">Prepare</button>
+                    </div>
+                    <div class="result-box" id="interviewResult">
+                        <div class="result-content" id="interviewContent">Learn interview tips and strategies</div>
+                    </div>
+                </div>
+
+                <!-- Salary Negotiation -->
+                <div class="tool-card">
+                    <div class="card-header">
+                        <span class="card-icon">💰</span>
+                        <h3>Salary Guide</h3>
+                    </div>
+                    <p class="card-description">Master salary negotiation strategies</p>
+                    <div class="card-body">
+                        <button onclick="salaryNegotiation()" class="tool-btn primary full-width">Learn</button>
+                    </div>
+                    <div class="result-box" id="salaryResult">
+                        <div class="result-content" id="salaryContent">Get salary negotiation tips</div>
+                    </div>
+                </div>
+
+                <!-- LinkedIn Optimization -->
+                <div class="tool-card">
+                    <div class="card-header">
+                        <span class="card-icon">💼</span>
+                        <h3>LinkedIn Profile</h3>
+                    </div>
+                    <p class="card-description">Optimize your LinkedIn presence</p>
+                    <div class="card-body">
+                        <button onclick="linkedinOptimize()" class="tool-btn primary full-width">Optimize</button>
+                    </div>
+                    <div class="result-box" id="linkedinResult">
+                        <div class="result-content" id="linkedinContent">Get LinkedIn optimization tips</div>
+                    </div>
+                </div>
+
+                <!-- Networking Strategy -->
+                <div class="tool-card">
+                    <div class="card-header">
+                        <span class="card-icon">🤝</span>
+                        <h3>Networking</h3>
+                    </div>
+                    <p class="card-description">Build professional connections</p>
+                    <div class="card-body">
+                        <button onclick="networkingStrategy()" class="tool-btn primary full-width">Build Network</button>
+                    </div>
+                    <div class="result-box" id="networkResult">
+                        <div class="result-content" id="networkContent">Learn networking strategies</div>
+                    </div>
+                </div>
+
+                <!-- Certification Path -->
+                <div class="tool-card">
+                    <div class="card-header">
+                        <span class="card-icon">🏆</span>
+                        <h3>Certifications</h3>
+                    </div>
+                    <p class="card-description">Get certified and boost your career</p>
+                    <div class="card-body">
+                        <button onclick="certificationPath()" class="tool-btn primary full-width">Explore</button>
+                    </div>
+                    <div class="result-box" id="certResult">
+                        <div class="result-content" id="certContent">Discover certification paths</div>
+                    </div>
+                </div>
+
+                <!-- Career Transition -->
+                <div class="tool-card">
+                    <div class="card-header">
+                        <span class="card-icon">🔄</span>
+                        <h3>Career Change</h3>
+                    </div>
+                    <p class="card-description">Make a successful career transition</p>
+                    <div class="card-body">
+                        <button onclick="careerTransition()" class="tool-btn primary full-width">Plan</button>
+                    </div>
+                    <div class="result-box" id="transitionResult">
+                        <div class="result-content" id="transitionContent">Learn career transition strategies</div>
+                    </div>
+                </div>
+
+                <!-- Freelancing Guide -->
+                <div class="tool-card">
+                    <div class="card-header">
+                        <span class="card-icon">🚀</span>
+                        <h3>Freelancing</h3>
+                    </div>
+                    <p class="card-description">Start your freelance career</p>
+                    <div class="card-body">
+                        <button onclick="freelanceGuide()" class="tool-btn primary full-width">Get Started</button>
+                    </div>
+                    <div class="result-box" id="freelanceResult">
+                        <div class="result-content" id="freelanceContent">Learn freelancing best practices</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- About Section -->
+        <section id="about" class="about-section">
+            <h2 class="section-title">About CareerAI</h2>
+            <div class="about-content">
+                <div class="about-card">
+                    <h3>🤖 AI-Powered</h3>
+                    <p>Advanced algorithms analyze your profile and provide personalized career recommendations</p>
+                </div>
+                <div class="about-card">
+                    <h3>📊 Data-Driven</h3>
+                    <p>Based on current job market trends, salary data, and industry insights</p>
+                </div>
+                <div class="about-card">
+                    <h3>🎯 Comprehensive</h3>
+                    <p>From career exploration to skill development and job hunting strategies</p>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-content">
+            <p>&copy; 2024 CareerAI - Your Personal Career Guide | Powered by AI</p>
+            <p class="footer-info">Built with ❤️ for students everywhere</p>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
